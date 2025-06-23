@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home</title>
+  <link rel="stylesheet" href="../styles/styles.css" />
+</head>
+<script src="../scripts/hamburguer.js" defer></script>
+<body>
+  
+
+  <!-- Top Bar -->
+  <header class="topbar">
+
+    <div class="menu-toggle" id="menu-toggle">
+      <!-- ícone hamburguer -->
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- logo central -->
+    <img src="../imgs/atlas_logo.svg" alt="Logo" class="logo" />
+
+  </header>
+
+  <!-- Sidebar -->
+   <div class="sidebar" id="sidebar">
+    <a href="index.html">Reader</a>
+    <hr>
+    <a href="product.html">Create Product</a>
+    <hr>
+    <a href="logs.html">Logs</a>
+    <hr>
+    <a href="forms.html">Forms</a>
+  </div>
+
+  <div class="content">
+
+    <table id="logs-table">
+      <thead>
+        <tr>
+          <th>EPC</th>
+          <th>Status</th>
+          <th>Last Seen</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <script src="../scripts/get_logs.js" defer></script>
+
+</body>
+</html>

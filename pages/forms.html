@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home</title>
+  <link rel="stylesheet" href="../styles/styles.css" />
+</head>
+<script src="../scripts/hamburguer.js" defer></script>
+
+<body>
+
+
+  <!-- Top Bar -->
+  <header class="topbar">
+
+    <div class="menu-toggle" id="menu-toggle">
+      <!-- ícone hamburguer -->
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- logo central -->
+    <img src="../imgs/atlas_logo.svg" alt="Logo" class="logo" />
+
+  </header>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="index.html">Reader</a>
+    <hr>
+    <a href="product.html">Create Product</a>
+    <hr>
+    <a href="logs.html">Logs</a>
+    <hr>
+    <a href="forms.html">Forms</a>
+  </div>
+
+  <div class="content">
+    <h3>Register Event</h3>
+
+    <div id="event-form-container" class="form-container">
+      <!-- Aqui entra o form dinâmico -->
+    </div>
+
+    <div class="form-navigation">
+      <button id="prev-btn">&larr; Previous</button>
+      <span id="form-counter">Event 0 of 0</span>
+      <button id="next-btn">Next &rarr;</button>
+    </div>
+  </div>
+
+
+   <script src="../scripts/forms.js"></script>
+</body>
+</html>

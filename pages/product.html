@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home</title>
+  <link rel="stylesheet" href="../styles/styles.css" />
+</head>
+
+<body>
+
+
+  <!-- Top Bar -->
+  <header class="topbar">
+
+    <div class="menu-toggle" id="menu-toggle">
+      <!-- ícone hamburguer -->
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- logo central -->
+    <img src="../imgs/atlas_logo.svg" alt="Logo" class="logo" />
+
+  </header>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="index.html">Reader</a>
+    <hr>
+    <a href="product.html">Create Product</a>
+    <hr>
+    <a href="logs.html">Logs</a>
+    <hr>
+    <a href="forms.html">Forms</a>
+  </div>
+
+  <div class="content">
+    <h3>Create a Product</h3>
+    <form id="dynamic-form" class="form-container" action="http://localhost:4000/extract-description" method="post" enctype="multipart/form-data">
+    <label for="mode">Submit type</label>
+    <select id="mode" name="mode">
+      <option value="" disabled selected>Select mode…</option>
+      <option value="file">File</option>
+      <option value="text">Text</option>
+    </select>
+
+    <div id="file-container" class="hidden">
+      <label for="file-input">Upload file:</label>
+      <input type="file" id="file-input" name="file" lang=""/>
+    </div>
+
+    <div id="text-container" class="hidden">
+     <label for="type-input">Select type:</label>
+    <input list="type-list" id="type-input" name="type-select" placeholder="Start typing…" />
+
+    <datalist id="type-list">
+    <!-- as opções serão inseridas via JS -->
+    </datalist>
+      <div id="fields-container"></div>
+    </div>
+
+    
+
+    <button type="submit">Submit</button>
+  </form>
+    <div id="review-container" class="hidden form-container">
+        <h3>Review Extracted Characteristics</h3>
+        <div id="review-fields"></div>
+        <button id="btn-back" type="button">Back</button>
+        <button id="btn-submit-review" type="button">Confirm & Submit</button>
+    </div>
+  </div>
+
+
+   <script src="../scripts/product.js"></script>
+</body>
+</html>

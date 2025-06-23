@@ -1,0 +1,407 @@
+/* Reset rápido */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+
+/* Topbar com gradiente */
+.topbar {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(52.57deg, #f3c300 -64.55%, #ff671d 65.26%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Ícone hamburguer */
+.menu-toggle {
+  position: absolute;
+  left: 20px;
+  width: 30px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.menu-toggle span {
+  display: block;
+  height: 4px;
+  background: white;
+  border-radius: 2px;
+}
+
+/* Logo centralizado */
+.logo {
+  position: absolute;
+  left: 50%;
+  top: -15px;
+  transform: translateX(-50%);
+  height: 100%;
+
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background: linear-gradient(52.57deg, #f3c300 -64.55%, #ff671d 65.26%);
+  padding-top: 80px; /* espaço pra topbar */
+  transition: left 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+}
+.sidebar a {
+  padding: 15px 20px;
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+.sidebar a:hover {
+  background-color: #444;
+}
+
+.sidebar hr {
+  border: none;
+  height: 1px;
+  width: 80%;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 8px auto;
+}
+
+
+.sidebar.active {
+  left: 0;
+}
+
+/* Conteúdo principal empurrado pra baixo */
+.content {
+  padding: 20px;
+}
+
+
+
+/* 2. Tabela normal, full-width e layout fixed */
+#tag-table,
+#logs-table {
+  width: 100%;
+  table-layout: fixed;            /* divide igualmente as colunas */
+  border-collapse: collapse;
+  background: #fff;
+}
+
+/* 3. Cabeçalho com gradient */
+#tag-table thead th,
+#logs-table thead th {
+  background: linear-gradient(52.57deg, #f3c300 -64.55%, #ff671d 65.26%);
+  color: #fff;
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* 4. Limitação e reticências nas células */
+#tag-table th,
+#tag-table td,
+#logs-table th,
+#logs-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 5. Estilo das células do corpo */
+#tag-table tbody td,
+#logs-table tbody td {
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+}
+
+/* 6. Linha “zebrinha” e hover */
+#tag-table tbody tr:nth-child(even),
+ #logs-table tbody tr:nth-child(even){
+  background: #f9f9f9;
+}
+#tag-table tbody tr:hover,
+#logs-table tbody tr:hover {
+  background: #f1f1f1;
+}
+
+/* 7. Remover borda da última linha */
+#tag-table tbody tr:last-child td,
+#logs-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* 8. Scrollbar customizada (opcional) */
+.table-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+.table-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}
+
+
+.control-reader {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;    /* espaço acima e abaixo */
+  justify-content: flex-start;
+}
+
+/* Estilo base dos botões */
+.control-reader button {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid #ff671d;
+  border-radius: 4px;
+  background: #fff;
+  color: #ff671d;
+  cursor: pointer;
+  transition: 
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Hover (inverte as cores para o gradient laranja) */
+.control-reader button:hover {
+  background: linear-gradient(52.57deg, #f3c300 -64.55%, #ff671d 65.26%);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* Estados especiais, se quiser diferenciar */
+#btn-start { /* opcional: verde claro para “start” */
+  /* background: #4caf50; color: #fff; border-color: #4caf50; */
+}
+#btn-stop { /* opcional: vermelho para “stop” */
+  /* background: #e53935; color: #fff; border-color: #e53935; */
+}
+#btn-status { /* opcional: cinza para “status” */
+  /* background: #ccc; color: #333; border-color: #ccc; */
+}
+
+
+.form-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.form-container label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+.form-container select,
+.form-container input[type="file"],
+.form-container input[type="text"],
+.form-container button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-container button {
+  margin-top: 20px;
+  background: linear-gradient(52.57deg, #f3c300 -64.55%, #ff671d 65.26%);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.form-container button:hover {
+  opacity: 0.9;
+}
+
+.hidden {
+  display: none;
+}
+
+/* campos dinâmicos */
+#fields-container .field-group {
+  margin-top: 12px;
+}
+#fields-container .field-group label {
+  font-weight: normal;
+}
+
+.content h3 {
+    text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.form-container label[for="type-input"] {
+  margin-top: 12px;
+  display: block;
+  font-weight: 600;
+}
+
+#type-input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#type-input:focus {
+  border-color: #ff671d;
+  box-shadow: 0 0 0 3px rgba(255, 103, 29, 0.2);
+  outline: none;
+}
+
+/* Reaproveita estilo de field-group para os inputs gerados */
+.field-group {
+  margin-top: 12px;
+}
+
+.field-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.field-group input,
+.field-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field-group input:focus,
+.field-group textarea:focus {
+  border-color: #ff671d;
+  box-shadow: 0 0 0 3px rgba(255, 103, 29, 0.2);
+  outline: none;
+}
+
+/* Container do formulário de evento */
+#event-form-container {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+/* Navegação entre formulários */
+.form-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #333;
+}
+
+.form-navigation button {
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid #ff671d;
+  border-radius: 4px;
+  background: #fff;
+  color: #ff671d;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.form-navigation button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.form-navigation button:hover:not(:disabled) {
+  background: linear-gradient(52.57deg, #f3c300 -64.55%, #ff671d 65.26%);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* Campos do form de evento */
+#event-form label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+#event-form p {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+#event-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+#event-form textarea:focus {
+  border-color: #ff671d;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255,103,29,0.2);
+}
+
+/* Botão de submit do form de evento */
+#event-form button[type="submit"] {
+  margin-top: 16px;
+  padding: 10px 16px;
+  background: linear-gradient(52.57deg, #f3c300 -64.55%, #ff671d 65.26%);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+#event-form button[type="submit"]:hover {
+  opacity: 0.9;
+}
+
+
+
