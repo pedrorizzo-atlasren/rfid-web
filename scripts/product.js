@@ -239,10 +239,35 @@ raw
 
         // popula reviewFields
         reviewFields.innerHTML = `
-          <p><strong>Part Number:</strong> ${dataParsed['part number']  || 'Not found'}</p>
-          <p><strong>Manufacturer:</strong> ${dataParsed.manufacturer    || 'Not found'}</p>
-          <p><strong>Type:</strong> ${returnedType}</p>
-        `;
+        <div class="field-group">
+          <label for="rev-name"><strong>Name:</strong></label>
+          <input type="text" id="rev-name" name="name" value="${dataParsed.product || ''}" />
+        </div>
+        <div class="field-group">
+          <label for="rev-part_number"><strong>Part Number:</strong></label>
+          <input type="text" id="rev-part_number" name="part number" value="${dataParsed['part number'] || ''}" />
+        </div>
+        <div class="field-group">
+          <label for="rev-manufacturer"><strong>Manufacturer:</strong></label>
+          <input type="text" id="rev-manufacturer" name="manufacturer" value="${dataParsed.manufacturer || ''}" />
+        </div>
+        <div class="field-group">
+          <label for="rev-type"><strong>Type:</strong></label>
+          <input type="text" id="rev-type" name="type" value="${returnedType}" />
+        </div>
+        <div class="field-group">
+          <label for="rev-ncm"><strong>NCM:</strong></label>
+          <input type="text" id="rev-ncm" name="ncm" value="${dataParsed['NCM'] || ''}" />
+        </div>
+        <div class="field-group">
+          <label for="rev-datasheet"><strong>Datasheet:</strong></label>
+          <input type="text" id="rev-datasheet" name="datasheet" value="${dataParsed.datasheet || ''}" />
+        </div>
+        <div class="field-group">
+          <label for="rev-price"><strong>Price:</strong></label>
+          <input type="text" id="rev-price" name="price" value="" placeholder="Enter price" />
+        </div>
+      `;
         Object.entries(typeObj).forEach(([key, val]) => {
           if (key === 'name') return;
           const id = 'rev-' + key.replace(/[^a-z0-9]/gi,'_').toLowerCase();
