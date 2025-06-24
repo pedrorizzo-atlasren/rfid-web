@@ -177,12 +177,16 @@ typeInput.addEventListener('change', () => {
   // 1) Campos fixos: Part Number e Manufacturer
   fieldsContainer.innerHTML += `
     <div class="field-group">
+      <label for="field-name"><strong>Name:</strong></label>
+      <input type="text" id="field-name" name="name" placeholder="Enter the name of the product" required/>
+    </div>
+    <div class="field-group">
       <label for="field-part-number"><strong>Part Number:</strong></label>
-      <input type="text" id="field-part-number" name="part number" placeholder="Enter part number" />
+      <input type="text" id="field-part-number" name="part number" placeholder="Enter part number" required/>
     </div>
     <div class="field-group">
       <label for="field-manufacturer"><strong>Manufacturer:</strong></label>
-      <input type="text" id="field-manufacturer" name="manufacturer" placeholder="Enter manufacturer" />
+      <input type="text" id="field-manufacturer" name="manufacturer" placeholder="Enter manufacturer" required/>
     </div>
     <div class="field-group">
       <label for="field-ncm"><strong>NCM:</strong></label>
@@ -282,10 +286,72 @@ raw
       }
 
     } else {
-      // modo text… coletar fieldsContainer…
-      const manual = {};
-      fieldsContainer.querySelectorAll('input').forEach(i => manual[i.name] = i.value);
-      console.log('Manual payload:', manual);
+      // 1) Campos fixos obrigatórios
+      const product          = document.getElementById('field-name').value.trim();
+      const partNumber    = document.getElementById('field-part-number').value.trim();
+      const manufacturer  = document.getElementById('field-manufacturer').value.trim();
+      const productType          = typeInput.value.trim(); // o <input list="type-list">
+      const ncm           = document.getElementById('field-ncm').value.trim() || undefined;
+      const datasheetURL  = document.getElementById('field-datasheet').value.trim() || undefined;
+      const priceRaw      = document.getElementById('field-price').value.trim();
+      const price         = priceRaw ? parseFloat(priceRaw) : undefined;
+
+      // 2) valida obrigatórios
+      if (!product || !partNumber || !manufacturer || !productType) {
+        return alert('Preencha Name, Part Number, Manufacturer e Type.');
+      }
+
+      // 3) monta a string de description com os campos dinâmicos
+      // pega todos os inputs menos os fixos
+      const dynamicInputs = Array.from(fieldsContainer.querySelectorAll('input'))
+        .filter(i => ![
+          'name','part number','manufacturer','type','ncm','datasheet','price'
+        ].includes(i.name));
+
+      const description = dynamicInputs
+        .map(i => `${i.name}: ${i.value.trim() || 'Not found'}`)
+        .join(', ');
+
+      // 4) monta payload no mesmo formato do RegisterProduct
+        const payload = {
+          product,                // ex: “PowerGuard 5000”
+          product_type: productType,                   // ex: “UPS”
+          name: product,          // ou, se preferir, outro campo de “name”
+          part_number: partNumber,
+          manufacturer,
+          price,                  // undefined vira null no JSON
+          datasheetURL,
+          ncm,
+          description             // string formatada
+        };
+
+      console.log('Manual payload:', payload);
+
+       const endpoint = 'http://localhost:4000/submit-product';
+
+      // 5) envia pro mesmo endpoint
+      try {
+        const res = await fetch(endpoint,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          console.error('Erro de validação:', err.detail);
+          return alert('Falha ao registrar: verifique console.');
+        }
+
+        const result = await res.json();
+        console.log('Registrado:', result);
+        alert('Produto registrado com sucesso!');
+        window.location.href = '/pages/product.html';
+      } catch (err) {
+        console.error(err);
+        alert('Erro na requisição: ' + err.message);
+      }
     }
   });
 
@@ -294,15 +360,73 @@ raw
     reviewContainer.classList.add('hidden');
     form.classList.remove('hidden');
   });
-  btnSubmitReview.addEventListener('click', () => {
+
+
+ 
+  reviewContainer.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    // 1) Campos fixos
+    const product      = document.getElementById('rev-name').value.trim();
+    const partNumber   = document.getElementById('rev-part_number').value.trim();
+    const manufacturer = document.getElementById('rev-manufacturer').value.trim();
+    const productType         = document.getElementById('rev-type').value.trim();
+    const priceRaw     = document.getElementById('rev-price').value.trim();
+    const price        = priceRaw ? parseFloat(priceRaw) : undefined;
+    const datasheetURL = document.getElementById('rev-datasheet').value.trim() || undefined;
+    const ncm = document.getElementById("rev-ncm").value.trim()
+
+    // validação obrigatórios
+    if (!product || !partNumber || !manufacturer || !productType) {
+      return alert('Preencha Name, Part Number e Manufacturer.');
+    }
+
+    // 2) Monta a string de description com os fields dinâmicos
+    // pega todos os inputs exceto os fixos (name, part_number, manufacturer, type, price, datasheet)
+    const dynamicInputs = Array.from(reviewFields.querySelectorAll('input'))
+      .filter(i => ![
+        'name','part number','manufacturer','type','price','datasheet', 'ncm'
+      ].includes(i.name));
+
+    const description = dynamicInputs
+      .map(i => `${i.name}: ${i.value.trim() || 'Not found'}`)
+      .join(', ');
+
+    // 3) Monta o payload conforme o schema RegisterProduct
     const payload = {
-      'part number': reviewFields.querySelector('p:nth-child(1)').textContent.split(': ')[1],
-      manufacturer:  reviewFields.querySelector('p:nth-child(2)').textContent.split(': ')[1],
-      type: { name: reviewFields.querySelector('p:nth-child(3)').textContent.split(': ')[1] }
+      product,                // ex: “PowerGuard 5000”
+      product_type: productType,                   // ex: “UPS”
+      name: product,          // ou, se preferir, outro campo de “name”
+      part_number: partNumber,
+      manufacturer,
+      price,                  // undefined vira null no JSON
+      datasheetURL,
+      ncm,
+      description             // string formatada
     };
-    reviewFields.querySelectorAll('input').forEach(i => payload.type[i.name] = i.value);
-    console.log('Final payload:', payload);
+
+    // 4) Envia para o endpoint
+
+    console.log(payload)
+
+    try {
+      const res = await fetch(reviewContainer.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+      const result = await res.json();
+      console.log('Registrado:', result);
+      alert('Produto registrado com sucesso!');
+      window.location.href = '/pages/product.html';
+      // opcional: resetar tudo ou redirecionar
+    } catch (err) {
+      console.error(err);
+      alert('Falha ao registrar: ' + err.message);
+    }
   });
+
 
 });
 

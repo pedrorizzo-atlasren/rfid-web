@@ -39,38 +39,38 @@
   <div class="content">
     <h3>Create a Product</h3>
     <form id="dynamic-form" class="form-container" action="http://localhost:4000/extract-description" method="post" enctype="multipart/form-data">
-    <label for="mode">Submit type</label>
-    <select id="mode" name="mode">
-      <option value="" disabled selected>Select mode…</option>
-      <option value="file">File</option>
-      <option value="text">Text</option>
-    </select>
+      <label for="mode">Submit type</label>
+      <select id="mode" name="mode">
+        <option value="" disabled selected>Select mode…</option>
+        <option value="file">File</option>
+        <option value="text">Text</option>
+      </select>
 
-    <div id="file-container" class="hidden">
-      <label for="file-input">Upload file:</label>
-      <input type="file" id="file-input" name="file" lang=""/>
-    </div>
+      <div id="file-container" class="hidden">
+        <label for="file-input">Upload file:</label>
+        <input type="file" id="file-input" name="file" lang=""/>
+      </div>
 
-    <div id="text-container" class="hidden">
-     <label for="type-input">Select type:</label>
-    <input list="type-list" id="type-input" name="type-select" placeholder="Start typing…" />
+      <div id="text-container" class="hidden">
+      <label for="type-input">Select type:</label>
+      <input list="type-list" id="type-input" name="type-select" placeholder="Start typing…"/>
 
-    <datalist id="type-list">
-    <!-- as opções serão inseridas via JS -->
-    </datalist>
-      <div id="fields-container"></div>
-    </div>
+      <datalist id="type-list">
+      <!-- as opções serão inseridas via JS -->
+      </datalist>
+        <div id="fields-container"></div>
+      </div>
 
-    
+      
 
-    <button type="submit">Submit</button>
-  </form>
-    <div id="review-container" class="hidden form-container">
+      <button type="submit">Submit</button>
+    </form>
+    <form id="review-container" class="hidden form-container" action="http://localhost:4000/submit-product">
         <h3>Review Extracted Characteristics</h3>
         <div id="review-fields"></div>
         <button id="btn-back" type="button">Back</button>
-        <button id="btn-submit-review" type="button">Confirm & Submit</button>
-    </div>
+        <button id="btn-submit-review" type="submit">Confirm & Submit</button>
+    </form>
   </div>
 
 
