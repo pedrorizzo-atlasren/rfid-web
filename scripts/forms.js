@@ -11,14 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
   fetch('http://localhost:4000/logs')
     .then(res => res.json())
     .then(logs => {
-      // transforme { epc: [evt...] } em lista de { epc, ...evt }
-      Object.entries(logs).forEach(([epc, evts]) => {
-        evts.forEach(evt => {
-          if ((evt.status === 'saida' || evt.status === 'reentrada') && !evt.registered) {
-            events.push({ epc, ...evt });
+
+        logs.forEach((log) => {
+            if ((log.status === 'saída' || log.status === 'reentrada') && !log.registered) {
+            events.push({ ...log });
           }
-        });
-      });
+        })
+ 
       if (events.length === 0) {
         container.innerHTML = '<p>No pending events to register.</p>';
         prevBtn.disabled = nextBtn.disabled = true;
@@ -37,14 +36,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     container.innerHTML = `
       <form id="event-form">
-        <p><strong>EPC:</strong> ${e.epc}</p>
+        <p><strong>EPC:</strong> ${e.item_id}</p>
         <p><strong>Status:</strong> ${e.status}</p>
-        <p><strong>When:</strong> ${new Date(e.timestamp*1000).toLocaleString()}</p>
+        <p><strong>When:</strong> ${e.timestamp}</p>
         <label for="reason">Explain why this happened:</label>
         <textarea id="reason" name="reason" rows="4" required></textarea>
         <button type="submit">Submit</button>
       </form>
     `;
+
+    // <p><strong>When:</strong> ${new Date(e.timestamp*1000).toLocaleString()}</p>
     prevBtn.disabled = index === 0;
     nextBtn.disabled = index === events.length-1;
 
@@ -64,10 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
-        epc: current.epc,
-        timestamp: current.timestamp,
-        status: current.status,
-        reason
+        item_id: current.item_id,
+        log_id: current.log_id,
+        description: reason
       })
     })
     .then(res => {
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
       events.splice(index, 1);
       if (index >= events.length) index = events.length - 1;
       if (events.length === 0) {
-        container.innerHTML = '<p>All events have been registered 🎉</p>';
+        container.innerHTML = '<p>All events have been registered</p>';
         prevBtn.disabled = nextBtn.disabled = true;
       } else {
         renderForm();

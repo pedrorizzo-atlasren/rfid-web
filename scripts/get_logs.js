@@ -8,24 +8,27 @@ document.addEventListener('DOMContentLoaded', () => {
       tableBody.innerHTML = '';  // limpa
       console.log(logs)
 
-      Object.entries(logs).forEach(([epc, events]) => {
-        events.forEach((evt, idx) => {
-          const tr = document.createElement('tr');
+      logs.forEach(log => {
+        const tr = document.createElement('tr');
 
-          // Última antena: evt.antenna
-          const tdEPC = document.createElement('td')
-          const tdStat = document.createElement('td');
-          const tdTime = document.createElement('td');
+        // Última antena: evt.antenna
+        const tdEPC = document.createElement('td')
+        const tdStat = document.createElement('td');
+        const tdTime = document.createElement('td');
+        const tdDescription = document.createElement('td')
 
-          tdEPC.textContent = epc
-          tdStat.textContent = evt.status;
-          tdTime.textContent = new Date(evt.timestamp * 1000)
-                                .toLocaleString();
+        tdEPC.textContent = log.item_id
+        tdStat.textContent = log.status;
+        tdTime.textContent = log.timestamp
+        tdDescription.textContent = log.description
+        // tdTime.textContent = new Date(log.timestamp * 1000)
+        //                     .toLocaleString();
 
-          tr.append(tdEPC, tdStat, tdTime);
-          tableBody.appendChild(tr);
-        });
-      });
+        tr.append(tdEPC, tdStat, tdTime, tdDescription);
+        tableBody.appendChild(tr);
+      })
+  
+
     })
     .catch(err => {
       console.error('Erro ao buscar logs:', err);
