@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Search</title>
+  <link rel="stylesheet" href="../styles/styles.css" />
+  <style>
+    /* Chat window */
+    .chat-container {
+      max-width: 700px;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .chat-header {
+      background: linear-gradient(52.57deg, #f3c300 -64.55%, #ff671d 65.26%);
+      color: #fff;
+      padding: 12px 16px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .message {
+      margin-bottom: 12px;
+      display: flex;
+    }
+    .message.user .bubble {
+      margin-left: auto;
+      background: #ff671d;
+      color: #fff;
+    }
+    .message.bot .bubble {
+      margin-right: auto;
+      background: #f1f1f1;
+      color: #333;
+    }
+    .bubble {
+      max-width: 70%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      line-height: 1.4;
+    }
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #eee;
+    }
+    .chat-input input {
+      flex: 1;
+      border: none;
+      padding: 12px;
+      font-size: 14px;
+    }
+    .chat-input button {
+      border: none;
+      background: linear-gradient(52.57deg, #f3c300 -64.55%, #ff671d 65.26%);
+      color: white;
+      padding: 0 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: opacity .2s;
+    }
+    .chat-input button:hover {
+      opacity: .9;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="../scripts/hamburguer.js" defer></script>
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="menu-toggle" id="menu-toggle">
+      <span></span><span></span><span></span>
+    </div>
+    <img src="../imgs/atlas_logo.svg" alt="Logo" class="logo" />
+  </header>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="index.html">Reader</a>
+    <hr>
+    <a href="product.html">Create Product</a>
+    <hr>
+    <a href="logs.html">Logs</a>
+    <hr>
+    <a href="forms.html">Forms</a>
+    <hr>
+    <a href="chat.html">Chat</a>
+  </div>
+
+  <div class="content">
+    <h3>Product Search</h3>
+
+    <div class="chat-container">
+      <div class="chat-header">Atlas Catalog</div>
+      <div class="chat-messages" id="chatMessages">
+        <!-- As mensagens aparecerão aqui -->
+      </div>
+      <form class="chat-input" id="chatForm">
+        <input type="text" id="chatInput" placeholder="Atlas Catalog..." autocomplete="off" required />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+
+  </div>
+
+  <script src="../scripts/chat.js" defer></script>
+</body>
+</html>
