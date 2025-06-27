@@ -178,7 +178,7 @@ typeInput.addEventListener('change', () => {
   fieldsContainer.innerHTML += `
     <div class="field-group">
       <label for="field-name"><strong>Name:</strong></label>
-      <input type="text" id="field-name" name="name" placeholder="Enter the name of the product" required/>
+      <input type="text" id="field-name" name="name" placeholder="Enter the name of the product" required pattern="^[0-9]{4}\.[0-9]{2}\.[0-9]{2}$"/>
     </div>
     <div class="field-group">
       <label for="field-part-number"><strong>Part Number:</strong></label>
@@ -190,7 +190,7 @@ typeInput.addEventListener('change', () => {
     </div>
     <div class="field-group">
       <label for="field-ncm"><strong>NCM:</strong></label>
-      <input type="text" id="field-ncm" name="ncm" placeholder="Enter NCM" />
+      <input type="text" id="field-ncm" name="ncm" placeholder="Enter NCM" required/>
     </div>
     <div class="field-group">
       <label for="field-price"><strong>Price:</strong></label>
@@ -245,23 +245,23 @@ raw
         reviewFields.innerHTML = `
         <div class="field-group">
           <label for="rev-name"><strong>Name:</strong></label>
-          <input type="text" id="rev-name" name="name" value="${dataParsed.product || ''}" />
+          <input type="text" id="rev-name" name="name" value="${dataParsed.product || ''}" required/>
         </div>
         <div class="field-group">
           <label for="rev-part_number"><strong>Part Number:</strong></label>
-          <input type="text" id="rev-part_number" name="part number" value="${dataParsed['part number'] || ''}" />
+          <input type="text" id="rev-part_number" name="part number" value="${dataParsed['part number'] || ''}" required/>
         </div>
         <div class="field-group">
           <label for="rev-manufacturer"><strong>Manufacturer:</strong></label>
-          <input type="text" id="rev-manufacturer" name="manufacturer" value="${dataParsed.manufacturer || ''}" />
+          <input type="text" id="rev-manufacturer" name="manufacturer" value="${dataParsed.manufacturer || ''}" required/>
         </div>
         <div class="field-group">
           <label for="rev-type"><strong>Type:</strong></label>
-          <input type="text" id="rev-type" name="type" value="${returnedType}" />
+          <input type="text" id="rev-type" name="type" value="${returnedType}" required/>
         </div>
         <div class="field-group">
           <label for="rev-ncm"><strong>NCM:</strong></label>
-          <input type="text" id="rev-ncm" name="ncm" value="${dataParsed['NCM'] || ''}" />
+          <input type="text" id="rev-ncm" name="ncm" value="${dataParsed['NCM'] || ''}" required pattern="^[0-9]{4}\.[0-9]{2}\.[0-9]{2}$"/>
         </div>
         <div class="field-group">
           <label for="rev-datasheet"><strong>Datasheet:</strong></label>

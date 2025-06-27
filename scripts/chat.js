@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const form     = document.getElementById("chatForm");
   const input    = document.getElementById("chatInput");
@@ -46,7 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // salva sessionId para próximas vezes
       sessionId = data.session_id;
 
-      loading.innerHTML = data.answer;
+      loading.innerHTML = marked.parse(data.answer);
+
     } catch (err) {
       loading.innerHTML = `<span style="color:red;">Erro: ${err.message}</span>`;
     }
