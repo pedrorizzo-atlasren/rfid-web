@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Items</title>
+  <link rel="stylesheet" href="../styles/styles.css" />
+  <style>
+    .form-container { max-width: 400px; margin: 20px auto; }
+    .form-container label { display: block; margin-top: 12px; font-weight: 600; }
+    .form-container select,
+    .form-container input { width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px; }
+    .form-container button { margin-top: 16px; width: 100%; background: linear-gradient(52.57deg, #f3c300 -64.55%, #ff671d 65.26%); color: #fff; padding: 10px; border: none; border-radius: 4px; cursor: pointer; }
+    .form-container button:hover { opacity: .9; }
+    .epc-list { margin-top: 20px; }
+    .epc-list li { background: #f9f9f9; padding: 8px; border-radius: 4px; margin-bottom: 4px; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <script src="../scripts/hamburguer.js" defer></script>
+
+  <header class="topbar">
+    <div class="menu-toggle" id="menu-toggle"><span></span><span></span><span></span></div>
+    <img src="../imgs/atlas_logo.svg" alt="Logo" class="logo" />
+  </header>
+
+  <div class="sidebar" id="sidebar">
+    <a href="index.html">Reader</a><hr>
+    <a href="product.html">Create Product</a><hr>
+    <a href="logs.html">Logs</a><hr>
+    <a href="forms.html">Forms</a><hr>
+    <a href="chat.html">Chat</a><hr>
+    <a href="add_item.html">Add Item</a><hr>
+  </div>
+
+  <div class="content">
+    <h3>Add Items</h3>
+    <div class="form-container">
+      <label for="product-select">Produto:</label>
+      <select id="product-select" required>
+        <option value="" disabled selected>Carregando...</option>
+      </select>
+
+      <label for="quantity-input">Quantidade:</label>
+      <input type="number" id="quantity-input" min="1" value="1" required/>
+
+      <button id="btn-generate">Gerar EPCs</button>
+    </div>
+
+    <ul class="epc-list" id="epc-list"></ul>
+  </div>
+
+  <script src="../scripts/add_item.js" defer></script>
+</body>
+</html>
