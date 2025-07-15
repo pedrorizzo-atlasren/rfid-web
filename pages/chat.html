@@ -73,23 +73,26 @@
       opacity: .9;
     }
 
-    .bubble ul {
-        list-style-position: outside;   /* coloca o marcador do lado de fora do bloco */
-        margin: 0.5em 0;                /* espaça a lista do texto acima/abaixo */
-        padding-left: 1.2em;            /* recua a lista pra dentro do bubble */
-    }
+ 
+    .bubble ul,
+    .bubble ol {
+    list-style-position: inside;  /* ← markers go inside the box */
+    margin: 0.5em 0;               /* vertical spacing */
+    padding-left: 1.2em;           /* indent the list items */
+  }
 
     /* Garante que cada item não herde o background/padding do .bubble */
+    /* Make sure each <li> doesn’t get extra padding/background */
     .bubble li {
-        background: transparent;
-        padding: 0;
-        margin: 0.25em 0;
+      background: transparent;
+      padding: 0;
+      margin: 0.25em 0;
     }
 
-    /* Se quiser customizar só o marcador (o “pontinho”): */
+    /* Style the marker (bullet or number) */
     .bubble li::marker {
-        color: #ff671d;      /* muda a cor do bullet */
-        font-size: 1.2em;    /* aumenta um pouco */
+      color: #ff671d;
+      font-size: 1.2em;
     }
   </style>
 </head>

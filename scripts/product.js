@@ -1,4 +1,5 @@
 function extractJsonBlock(raw) {
+  console.log(raw)
   const start = raw.indexOf('{');
   if (start === -1) {
     throw new Error('Não achei nenhuma chave "{"');
@@ -35,6 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnSubmitReview = document.getElementById('btn-submit-review');
   const dataList = document.getElementById('type-list');
   const typeInput = document.getElementById('type-input');
+  const btnSubmit = document.getElementById('btn-submit');
+  const fileInput = document.getElementById('file-input')
 
 
   
@@ -222,20 +225,121 @@ typeInput.addEventListener('change', () => {
     e.preventDefault();  // isso impede o redirect
 
     if (modeSelect.value === 'file') {
+
+      if (!fileInput.files.length) {
+        alert('Select a PDF file');
+        return
+      }
+
+      const fd = new FormData()
+      fd.append("file", fileInput.files[0])
+
+    const questionMapping = {
+    "product": "what is the name of the product?",
+    "part number": "what is the part number of the product?",
+    "manufacturer": "who is the manufacturer of the product?",
+    "NCM": "what is the Nomenclatura Comum do Mercosul (NCM) of the product? You can answer this even if this information isn't provided in the document. If that's the case, answer it based on your knowledge.  When extracting or generating an NCM code, format it as 1234.56.78 (four digits, a dot, two digits, a dot, two digits).",
+    "datasheet": "what is the URL of the product's datasheet? You can answer this even if this information isn't provided in the document. If that's the case, answer it based on your knowledge",
+    "type": "what is the type of the product? It can be Keyboard, Conference System, Notebook, Monitor, Smartphone, Speaker, Videobar all-in-one or Unknown item.",
+    "if this document is related to a Conference System, return": `{
+      "microphone channels": "value",
+      "speaker output power (W)": "value",
+      "frequency response (Hz)": "value",
+      "noise cancellation": "value",
+      "connectivity (Ethernet/Wi-Fi/Bluetooth)": "value",
+      "control interface": "value",
+      "power supply (PoE/adapter)": "value",
+      "dimensions (mm)": "value",
+      "mounting options": "value"
+    }`,
+    "if this document is related to a Notebook, return": `{
+      "processor model": "value",
+      "RAM size (GB)": "value",
+      "storage type and capacity (GB)": "value",
+      "display size (inches) and resolution": "value",
+      "battery capacity (Wh)": "value",
+      "graphics (GPU)": "value",
+      "weight (kg)": "value",
+      "port selection (USB/HDMI/etc.)": "value",
+      "operating system": "value"
+    }`,
+    "if this document is related to a Monitor, return": `{
+      "screen size (inches)": "value",
+      "resolution": "value",
+      "panel type (IPS/VA/TN)": "value",
+      "refresh rate (Hz)": "value",
+      "brightness (cd/m²)": "value",
+      "contrast ratio": "value",
+      "response time (ms)": "value",
+      "connectivity (HDMI/DP/VGA)": "value",
+      "aspect ratio": "value"
+    }`,
+    "if this document is related to a Smartphone, return": `{
+      "display size (inches) and resolution": "value",
+      "processor chipset": "value",
+      "RAM (GB)": "value",
+      "storage (GB)": "value",
+      "battery capacity (mAh)": "value",
+      "rear/front camera (MP)": "value",
+      "operating system": "value",
+      "connectivity (5G/Wi-Fi/Bluetooth)": "value",
+      "dimensions (mm)": "value",
+      "weight (g)": "value"
+    }`,
+    "if this document is related to a Speaker, return": `{
+      "power output (W RMS)": "value",
+      "frequency response (Hz)": "value",
+      "impedance (Ω)": "value",
+      "sensitivity (dB)": "value",
+      "driver size (inches)": "value",
+      "connectivity (wired/Bluetooth/Wi-Fi)": "value",
+      "enclosure type": "value",
+      "dimensions (mm)": "value",
+      "weight (kg)": "value"
+    }`,
+    "if this document is related to a Videobar all-in-one, return": `{
+      "video resolution (e.g. 4K)": "value",
+      "field of view (°)": "value",
+      "microphone array (count)": "value",
+      "speaker output (W)": "value",
+      "beamforming technology": "value",
+      "connectivity (USB/PoE)": "value",
+      "built-in DSP features": "value",
+      "mounting options": "value",
+      "dimensions (mm)": "value"
+    }`,
+    "if this document is related to an Unknown item, return": `{
+      "application": "value"
+    }`
+  };
+
+
+
+
+      fd.append("questions_mapping", JSON.stringify(questionMapping))
+      btnSubmit.innerHTML = 'Loading...'
+      btnSubmit.disabled = true
+
       try {
+
         const res = await fetch(form.action, {
           method: form.method,
           body: new FormData(form)   // garante que o arquivo vai junto
         });
-        const data = await res.json();
-        let raw = data.response;
-raw
-        const dataParsed  = extractJsonBlock(raw)
-        console.log(dataParsed)
 
-        // extrai o objeto type
-        const typeObj     = dataParsed.type || {};
-        const returnedType= typeObj.name || 'Unknown';
+        // const res = await fetch("https://core-staging.atlasren.com/pdf/process-invoice", {
+        //   method: "POST",
+        //   headers: {
+        //     "X-API-Key": "odoostaging_key4gg@wQqLJ8EWsuWA",
+        //     "accept": "application/json"
+        //   },
+        //   body: fd
+        // });
+
+
+        const data = await res.json();
+        console.log(data)
+        let dataParsed = data.results;
 
         // troca views
         form.classList.add('hidden');
@@ -257,7 +361,7 @@ raw
         </div>
         <div class="field-group">
           <label for="rev-type"><strong>Type:</strong></label>
-          <input type="text" id="rev-type" name="type" value="${returnedType}" required/>
+          <input type="text" id="rev-type" name="type" value="${dataParsed.type}" required/>
         </div>
         <div class="field-group">
           <label for="rev-ncm"><strong>NCM:</strong></label>
@@ -272,17 +376,39 @@ raw
           <input type="text" id="rev-price" name="price" value="" placeholder="Enter price" />
         </div>
       `;
-        Object.entries(typeObj).forEach(([key, val]) => {
-          if (key === 'name') return;
-          const id = 'rev-' + key.replace(/[^a-z0-9]/gi,'_').toLowerCase();
-          reviewFields.innerHTML += `
-            <div class="field-group">
-              <label for="${id}">${key}:</label>
-              <input type="text" id="${id}" name="${key}" value="${val || 'Not found'}" />
-            </div>`;
-        });
+
+        
+      // Object.entries(typeObj).forEach(([key, val]) => {
+      //   if (key === 'name') return;
+      //   const id = 'rev-' + key.replace(/[^a-z0-9]/gi,'_').toLowerCase();
+      //   reviewFields.innerHTML += `
+      //     <div class="field-group">
+      //       <label for="${id}">${key}:</label>
+      //       <input type="text" id="${id}" name="${key}" value="${val || 'Not found'}" />
+      //     </div>`;
+      // });
+
+      const specsKey = `if this document is related to a ${dataParsed.type}, return`;
+
+      const specs = typeof dataParsed[specsKey] === 'object'
+      ? dataParsed[specsKey]
+      : {};
+
+      Object.entries(specs).forEach(([specName, specValue]) => {
+        const id = 'rev-' + specName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+        reviewFields.innerHTML += `
+          <div class="field-group">
+            <label for="${id}">${specName}:</label>
+            <input type="text" id="${id}" name="${specName}" value="${specValue}" />
+          </div>`;
+      });
+
       } catch (err) {
+        console.log(err)
         alert('Error: ' + err.message);
+      } finally {
+        btnSubmit.innerHTML = 'Submit'
+        btnSubmit.disabled = false
       }
 
     } else {
@@ -322,7 +448,8 @@ raw
           price,                  // undefined vira null no JSON
           datasheetURL,
           ncm,
-          description             // string formatada
+          description,
+          confirm: false            // string formatada
         };
 
       console.log('Manual payload:', payload);
@@ -361,6 +488,73 @@ raw
     form.classList.remove('hidden');
   });
 
+
+  function showSimilarDialog(candidates) {
+    // 1) Cria o overlay
+    const overlay = document.createElement('div');
+    overlay.classList.add('modal-overlay');
+
+
+    // 2) Cria o container do dialog
+    const dialog = document.createElement('div');
+    dialog.classList.add('modal-dialog')
+
+    overlay.appendChild(dialog);
+
+    // 3) Título
+    const title = document.createElement('h4');
+    title.classList.add('modal-title')
+    title.textContent = 'Produtos parecidos encontrados:';
+    dialog.appendChild(title);
+
+    // 4) Lista de candidatos
+    const ul = document.createElement('ul');
+    ul.classList.add('modal-list')
+
+    candidates.forEach(c => {
+      const li = document.createElement('li');
+      li.classList.add('modal-item')
+      // li.style.marginBottom = '12px';
+     li.innerHTML = `
+      <div class="item-info">
+        <strong>${c.product}</strong> (PN: ${c.part_number})<br/>
+        ${c.manufacturer}<br/>
+        ${c.description || ''}
+      </div>
+      <div class="item-distance">dist: ${c.distance.toFixed(3)}</div>
+    `;
+      ul.appendChild(li);
+    });
+    dialog.appendChild(ul);
+
+    // 5) Botões
+    const btnContainer = document.createElement('div');
+    btnContainer.classList.add('modal-buttons');
+
+
+
+    const cancel = document.createElement('button');
+    cancel.textContent = 'Cancelar';
+    cancel.classList.add('btn', 'btn-secondary');
+    cancel.onclick = () => document.body.removeChild(overlay);
+
+    const confirm = document.createElement('button');
+    confirm.textContent = 'Confirmar envio';
+    confirm.classList.add('btn', 'btn-primary');
+    // confirm.style.background = '#28a745';
+    // confirm.style.color = '#fff';
+    confirm.onclick = () => {
+      document.body.removeChild(overlay);
+      actuallySubmit(true);  // dispara o envio com confirm=true
+    };
+
+    btnContainer.appendChild(cancel);
+    btnContainer.appendChild(confirm);
+    dialog.appendChild(btnContainer);
+
+    // 6) Anexa ao body
+    document.body.appendChild(overlay);
+  }
 
  
   reviewContainer.addEventListener('submit', async e => {
@@ -402,7 +596,8 @@ raw
       price,                  // undefined vira null no JSON
       datasheetURL,
       ncm,
-      description             // string formatada
+      description,
+      confirm: false             // string formatada
     };
 
     // 4) Envia para o endpoint
@@ -417,10 +612,18 @@ raw
       });
       if (!res.ok) throw new Error(`Status ${res.status}`);
       const result = await res.json();
+
+      if (result.action == 'check_similarity'){
+        candidates = result.candidates
+
+        showSimilarDialog(candidates)
+
+      }
+      console.log(result)
       console.log('Registrado:', result);
-      alert('Produto registrado com sucesso!');
-      window.location.href = '/pages/product.html';
-      // opcional: resetar tudo ou redirecionar
+      // alert('Produto registrado com sucesso!');
+      // window.location.href = '/pages/product.html';
+      // opcional: resetar tudo ou redirecionar 
     } catch (err) {
       console.error(err);
       alert('Falha ao registrar: ' + err.message);
