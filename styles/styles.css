@@ -194,16 +194,7 @@ body {
   border-color: transparent;
 }
 
-/* Estados especiais, se quiser diferenciar */
-#btn-start { /* opcional: verde claro para “start” */
-  /* background: #4caf50; color: #fff; border-color: #4caf50; */
-}
-#btn-stop { /* opcional: vermelho para “stop” */
-  /* background: #e53935; color: #fff; border-color: #e53935; */
-}
-#btn-status { /* opcional: cinza para “status” */
-  /* background: #ccc; color: #333; border-color: #ccc; */
-}
+
 
 
 .form-container {
